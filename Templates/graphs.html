@@ -1,0 +1,438 @@
+<html>
+
+<head>
+    <script>
+        window.onload = function () {
+            console.log("LOADED");
+
+            //Configuration variables
+            var updateInterval = 20 //in ms
+            var numberElements = 100000;
+
+            //Globals
+            var updateCount = 0;
+
+            // Chart Objects
+            var xAccelChart = $("#xAccelChart");
+            var yAccelChart = $("#yAccelChart");
+            var zAccelChart = $("#zAccelChart");
+            var xMagChart = $("#xMagChart");
+            var yMagChart = $("#yMagChart");
+            var zMagChart = $("#zMagChart");
+            var soundChart = $("#soundChart");
+            var xGyroChart = $("#xGyroChart");
+            var yGyroChart = $("#yGyroChart");
+            var zGyroChart = $("#zGyroChart");
+
+            //chart instances & configuration
+
+            var commonOptions = {
+                scales: {
+                    xAxes: [{
+                        type: 'time',
+                        time: {
+                            displayFormats: {
+                                millisecond: 'mm:ss:SSS'
+                            }
+                        }
+                    }],
+                    yAxes: [{
+                        ticks: {
+                            beginAtZero: true
+                        }
+                    }]
+                },
+                legend: { display: false },
+                tooltips: {
+                    enabled: false
+                }
+            };
+            var xAccelChartInstance = new Chart(xAccelChart, {
+                type: 'line',
+                data: {
+                    datasets: [{
+                        label: "X Acceleration",
+                        data: 0,
+                        fill: false,
+                        borderColor: '#343e9a',
+                        borderWidth: 1
+                    }]
+                },
+                options: Object.assign({}, commonOptions, {
+                    title: {
+                        display: true,
+                        text: "Acceleration - X",
+                        fontSize: 18
+                    }
+                })
+            });
+
+            var yAccelChartInstance = new Chart(yAccelChart, {
+                type: 'line',
+                data: {
+                    datasets: [{
+                        label: "Y Acceleration",
+                        data: 0,
+                        fill: false,
+                        borderColor: '#343e9a',
+                        borderWidth: 1
+                    }]
+                },
+                options: Object.assign({}, commonOptions, {
+                    title: {
+                        display: true,
+                        text: "Acceleration - Y",
+                        fontSize: 18
+                    }
+                })
+            });
+
+            var zAccelChartInstance = new Chart(zAccelChart, {
+                type: 'line',
+                data: {
+                    datasets: [{
+                        label: "Z Acceleration",
+                        data: 0,
+                        fill: false,
+                        borderColor: '#343e9a',
+                        borderWidth: 1
+                    }]
+                },
+                options: Object.assign({}, commonOptions, {
+                    title: {
+                        display: true,
+                        text: "Acceleration - Z",
+                        fontSize: 18
+                    }
+                })
+            });
+
+            var xMagChartInstance = new Chart(xMagChart, {
+                type: 'line',
+                data: {
+                    datasets: [{
+                        label: "Magnenometer - X",
+                        data: 0,
+                        fill: false,
+                        borderColor: '#343e9a',
+                        borderWidth: 1
+                    }]
+                },
+                options: Object.assign({}, commonOptions, {
+                    title: {
+                        display: true,
+                        text: "Magnenometer - Y",
+                        fontSize: 18
+                    }
+                })
+            });
+
+            var yMagChartInstance = new Chart(yMagChart, {
+                type: 'line',
+                data: {
+                    datasets: [{
+                        label: "Magnenometer - Z",
+                        data: 0,
+                        fill: false,
+                        borderColor: '#343e9a',
+                        borderWidth: 1
+                    }]
+                },
+                options: Object.assign({}, commonOptions, {
+                    title: {
+                        display: true,
+                        text: "Magnenometer - Z",
+                        fontSize: 18
+                    }
+                })
+            });
+
+            var zMagChartInstance = new Chart(zMagChart, {
+                type: 'line',
+                data: {
+                    datasets: [{
+                        label: "Magnenometer - Y",
+                        data: 0,
+                        fill: false,
+                        borderColor: '#343e9a',
+                        borderWidth: 1
+                    }]
+                },
+                options: Object.assign({}, commonOptions, {
+                    title: {
+                        display: true,
+                        text: "Magnenometer - X",
+                        fontSize: 18
+                    }
+                })
+            });
+
+            var xGyroChartInstance = new Chart(xGyroChart, {
+                type: 'line',
+                data: {
+                    datasets: [{
+                        label: "Gyroscope - X",
+                        data: 0,
+                        fill: false,
+                        borderColor: '#343e9a',
+                        borderWidth: 1
+                    }]
+                },
+                options: Object.assign({}, commonOptions, {
+                    title: {
+                        display: true,
+                        text: "Gyroscope - X",
+                        fontSize: 18
+                    }
+                })
+            });
+
+            var yGyroChartInstance = new Chart(yGyroChart, {
+                type: 'line',
+                data: {
+                    datasets: [{
+                        label: "Gyroscope - Y",
+                        data: 0,
+                        fill: false,
+                        borderColor: '#343e9a',
+                        borderWidth: 1
+                    }]
+                },
+                options: Object.assign({}, commonOptions, {
+                    title: {
+                        display: true,
+                        text: "Gyroscope - Y",
+                        fontSize: 18
+                    }
+                })
+            });
+
+            var soundChartInstance = new Chart(soundChart, {
+                type: 'line',
+                data: {
+                    datasets: [{
+                        label: "Sound - decibels",
+                        data: 0,
+                        fill: false,
+                        borderColor: '#343e9a',
+                        borderWidth: 1
+                    }]
+                },
+                options: Object.assign({}, commonOptions, {
+                    title: {
+                        display: true,
+                        text: "Sound",
+                        fontSize: 18
+                    }
+                })
+            });
+
+            var zGyroChartInstance = new Chart(zGyroChart, {
+                type: 'line',
+                data: {
+                    datasets: [{
+                        label: "Gyroscope - Z",
+                        data: 0,
+                        fill: false,
+                        borderColor: '#343e9a',
+                        borderWidth: 1
+                    }]
+                },
+                options: Object.assign({}, commonOptions, {
+                    title: {
+                        display: true,
+                        text: "Gyroscope - Z",
+                        fontSize: 18
+                    }
+                })
+            });
+
+            function addData(data) {
+                if (data) {
+                    console.log(xAccelChartInstance.data.datasets)
+                    xAccelChartInstance.data.labels.push(new Date());
+                    xAccelChartInstance.data.datasets.forEach((dataset) => { dataset.data.push(data['acc_x']) });
+                    yAccelChartInstance.data.labels.push(new Date());
+                    yAccelChartInstance.data.datasets.forEach((dataset) => { dataset.data.push(data['acc_y']) });
+                    zAccelChartInstance.data.labels.push(new Date());
+                    zAccelChartInstance.data.datasets.forEach((dataset) => { dataset.data.push(data['acc_z']) });
+                    xMagChartInstance.data.labels.push(new Date());
+                    xMagChartInstance.data.datasets.forEach((dataset) => { dataset.data.push(data['mag_x']) });
+                    yMagChartInstance.data.labels.push(new Date());
+                    yMagChartInstance.data.datasets.forEach((dataset) => { dataset.data.push(data['mag_y']) });
+                    zMagChartInstance.data.labels.push(new Date());
+                    zMagChartInstance.data.datasets.forEach((dataset) => { dataset.data.push(data['mag_z']) });
+                    xGyroChartInstance.data.labels.push(new Date());
+                    xGyroChartInstance.data.datasets.forEach((dataset) => { dataset.data.push(data['gyro_x']) });
+                    yGyroChartInstance.data.labels.push(new Date());
+                    yGyroChartInstance.data.datasets.forEach((dataset) => { dataset.data.push(data['gyro_y']) });
+                    zGyroChartInstance.data.labels.push(new Date());
+                    zGyroChartInstance.data.datasets.forEach((dataset) => { dataset.data.push(data['gyro_z']) });
+                    soundChartInstance.data.labels.push(new Date());
+                    soundChartInstance.data.datasets.forEach((dataset) => { dataset.data.push(data['sound']) });
+
+                    if (updateCount > numberElements) {
+                        xAccelChartInstance.data.labels.shift();
+                        xAccelChartInstance.data.datasets[0].data.shift();
+                        yAccelChartInstance.data.labels.shift();
+                        yAccelChartInstance.data.datasets[0].data.shift();
+                        zAccelChartInstance.data.labels.shift();
+                        zAccelChartInstance.data.datasets[0].data.shift();
+                        xMagChartInstance.data.labels.shift();
+                        xMagChartInstance.data.datasets[0].data.shift();
+                        yMagChartInstance.data.labels.shift();
+                        yMagChartInstance.data.datasets[0].data.shift();
+                        zMagChartInstance.data.labels.shift();
+                        zMagChartInstance.data.datasets[0].data.shift();
+                        xGyroChartInstance.data.labels.shift();
+                        xGyroChartInstance.data.datasets[0].data.shift();
+                        yGyroChartInstance.data.labels.shift();
+                        yGyroChartInstance.data.datasets[0].data.shift();
+                        zGyroChartInstance.data.labels.shift();
+                        zGyroChartInstance.data.datasets[0].data.shift();
+                        soundChartInstance.data.labels.shift();
+                        soundChartInstance.data.datasets[0].data.shift();
+                    }
+                    else updateCount++;
+                    xAccelChartInstance.update();
+                    yAccelChartInstance.update();
+                    zAccelChartInstance.update();
+                    xMagChartInstance.update();
+                    yMagChartInstance.update();
+                    zMagChartInstance.update();
+                    xGyroChartInstance.update();
+                    yGyroChartInstance.update();
+                    zGyroChartInstance.update();
+                    soundChartInstance.update();
+                }
+            };
+
+            function updateData() {
+                console.log("Update Data");
+                $.getJSON("/getSensorData", addData);
+                setTimeout(updateData, updateInterval);
+            }
+            updateData();
+        }
+    </script>
+    <style>
+        .container {
+            display: flex;
+
+        }
+
+        .label {
+            flex: 1;
+            vertical-align: middle;
+            text-align: center;
+        }
+
+        .x {
+            flex: 3;
+            text-align: center;
+            background-color: rgba(235, 113, 101, 0.73);
+            margin: 10px;
+        }
+
+        .y {
+            flex: 3;
+            text-align: center;
+            background-color: rgba(70, 163, 71, 0.64);
+            margin-top: 10px;
+            margin-bottom: 10px;
+        }
+
+        .z {
+            flex: 3;
+            text-align: center;
+            background-color: rgba(70, 140, 215, 0.74);
+            margin: 10px;
+        }
+
+        h1 {
+            text-align: center;
+        }
+    </style>
+
+    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.1/jquery.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.2/Chart.bundle.js"></script>
+</head>
+
+<body>
+    <h1>Real Time Stream</h1>
+    <div id="labelSound" class="label">
+        <h2> Sound </h2>
+    </div>
+    <div id="soundChartContainer" class="container">
+        <div id="sound" class="x">
+
+            <canvas id="soundChart"></canvas>
+        </div>
+    </div>
+
+
+    <div id="labelAccel" class="label">
+        <h2> Acceleration </h2>
+    </div>
+
+    <div id="accelContainer" class="container">
+
+        <div id="xAccel" class="x">
+
+            <canvas id="xAccelChart"></canvas>
+        </div>
+        <!--xAccel-->
+        <div id="yAccel" class="y">
+
+            <canvas id="yAccelChart"></canvas>
+        </div>
+        <!--yAccel-->
+        <div id="zAccel" class="z">
+
+            <canvas id="zAccelChart"></canvas>
+        </div>
+        <!--zAccel-->
+    </div>
+
+    <div id="labelMag" class="label">
+        <h2> Magnenometer </h2>
+    </div>
+
+    <div id="magnoContainer" class="container">
+        <div id="Roll" class="x">
+            <canvas id="xMagChart"></canvas>
+        </div>
+        <!--xgyro-->
+        <div id="Pitch" class="y">
+            <canvas id="yMagChart"></canvas>
+        </div>
+        <!--ygyro-->
+        <div id="Yaw" class="z">
+            <canvas id="zMagChart"></canvas>
+        </div>
+        <!--zgyro-->
+    </div>
+    <!--gyroContainer-->
+    <div id="labelGyro" class="label">
+        <h2> Gyroscope </h2>
+    </div>
+
+    <div id="gyroContainer" class="container">
+        <div id="xGyro" class="x">
+            <canvas id="xGyroChart"></canvas>
+        </div>
+        <!--xgyro-->
+        <div id="yGyro" class="y">
+            <canvas id="yGyroChart"></canvas>
+        </div>
+        <!--ygyro-->
+        <div id="zGyro" class="z">
+            <canvas id="zGyroChart"></canvas>
+        </div>
+        <!--zgyro-->
+    </div>
+
+
+</body>
+
+</html>

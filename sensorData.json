@@ -1,0 +1,12 @@
+{
+    "acc_x": 100,
+    "acc_y": 10,
+    "acc_z": 0,
+    "gyro_x": 0,
+    "gyro_y": 0,
+    "gyro_z": 0,
+    "mag_x": 0,
+    "mag_y": 0,
+    "mag_z": 0,
+    "sound": 0
+}
