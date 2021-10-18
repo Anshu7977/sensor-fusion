@@ -307,11 +307,25 @@
                 }
             };
 
+            function updateResultComponent(data) {
+                var classIdentified = data['result'][0];
+                var mapping = {
+                    "0" : "No Activity",
+                    "1" : "Door Open",
+                    "2" : "Tap Water Running",
+                    "3" : "Washing Machine"
+                }
+                document.getElementById("predictedActivity").innerHTML = mapping[classIdentified]
+            }
+
             function updateData() {
                 console.log("Update Data");
                 $.getJSON("/getSensorData", addData);
+                console.log("predicting...")
+                $.getJSON("/predict",updateResultComponent);
                 setTimeout(updateData, updateInterval);
             }
+          
             updateData();
         }
     </script>
@@ -359,7 +373,7 @@
 </head>
 
 <body>
-    <h1>Real Time Stream</h1>
+    <h1 id="predictedActivity"> No-Activity  </h1>
     <div id="labelSound" class="label">
         <h2> Sound </h2>
     </div>

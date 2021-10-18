@@ -4,23 +4,20 @@ from werkzeug.datastructures import  FileStorage
 from flask import Flask, render_template, request, url_for, jsonify
 import json
 from flask_cors import CORS, cross_origin
-
+from predict import *
 
 app = Flask(__name__)
-cors = CORS(app)
 
 
 @app.route('/getSensorData')
-@cross_origin()
-def upload_file():
+def getSensorData():
     f = open('sensorData.json',)
     data = json.load(f)
     f.close()
     return jsonify(data)
 
 @app.route('/updateData',methods=['POST','OPTIONS'])
-@cross_origin()
-def bulk_upload_log_folder():
+def updateData():
     input_json = request.get_json(force=True) 
     f = open("sensorData.json", "w")
     json_object = json.dumps(input_json, indent = 4)
@@ -29,11 +26,14 @@ def bulk_upload_log_folder():
     return jsonify(status="true")
 
 @app.route('/')
-@cross_origin()
 def test_page():
     example_embed='Sending data... [this is text from python]'
     return render_template('graphs.html', embed=example_embed)
 
+@app.route('/predict')
+def predict_activity():
+    op = predict_activity_class()
+    return (op)
 		
 if __name__ == '__main__':
-   app.run(debug = True)
+   app.run(host='192.168.1.25', port=80)
